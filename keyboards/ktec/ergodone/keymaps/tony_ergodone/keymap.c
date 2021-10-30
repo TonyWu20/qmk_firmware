@@ -3,7 +3,8 @@
 #include "version.h"
 #define DVORAK 0
 #define QWERTY 1
-#define FN 2
+#define NUMPAD 2
+#define FN 3
 
 enum custom_keycodes
 {
@@ -30,7 +31,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_V, KC_M, KC_U, KC_Z, KC_L, KC_SLSH, KC_D, RCTL_T(KC_T), RSFT_T(KC_H),
         RALT_T(KC_O), RGUI_T(KC_R), KC_MINS, TO(2), KC_SLSH, KC_W, KC_K,
         KC_MINS, KC_X, KC_BSLS, KC_LEFT, KC_UP, KC_DOWN, KC_RGHT, KC_F12, KC_H,
-        KC_L, KC_K, LT(3,KC_J), LT(2, KC_ENT), KC_SPC),
+        KC_L, KC_K, LT(3, KC_J), LT(2, KC_ENT), KC_SPC),
     [1] = LAYOUT_ergodox(
         KC_NO, KC_1, KC_2, KC_3, KC_4, KC_5, KC_MINS, KC_TRNS, KC_AMPR, KC_COMM,
         KC_DOT, KC_GRV, KC_CIRC, KC_TRNS, KC_TRNS, KC_LBRC, KC_LCBR,
@@ -108,8 +109,13 @@ layer_state_t layer_state_set_user(layer_state_t state)
         // LED2 for COLEMAK
         ergodox_right_led_1_on();
         break;
+    case NUMPAD:
+        ergodox_right_led_1_off();
+        ergodox_right_led_3_on();
+        break;
     case FN:
-        // Red led on Pro Micro for Fn layer
+        // Two leds on the inner column
+        ergodox_right_led_1_on();
         ergodox_right_led_3_on();
         break;
     case QWERTY:
