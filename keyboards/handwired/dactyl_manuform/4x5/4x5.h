@@ -24,7 +24,7 @@
     { R14, R13, R12, R11, R10 }, \
     { R24, R23, R22, R21, R20 }, \
     { R30, R33, R32, R31, XXX }, \
-    { R40, R43, R42, R41, XXX } \
+    { R42, R41, R40, R43, XXX } \
 }
 #else
 #define LAYOUT( \
