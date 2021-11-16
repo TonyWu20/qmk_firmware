@@ -8,23 +8,11 @@ enum dactyl_layers
     FUNCTIONS,
     PLOVER
 };
-#define _BASE 0
-#define _RAISE 1
-#define _LOWER 2
-
-#define SFT_ESC SFT_T(KC_ESC) #define CTL_BSPC CTL_T(KC_BSPC)
-#define ALT_SPC ALT_T(KC_SPC)
-#define SFT_ENT SFT_T(KC_ENT)
-
-#define KC_ML KC_MS_LEFT
-#define KC_MR KC_MS_RIGHT
-#define KC_MU KC_MS_UP
-#define KC_MD KC_MS_DOWN
-#define KC_MB1 KC_MS_BTN1
-#define KC_MB2 KC_MS_BTN2
-
-#define RAISE MO(_RAISE)
-#define LOWER MO(_LOWER)
+enum custom_keycodes
+{
+    COPY,
+    PASTE
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MALTRON] = LAYOUT(
@@ -33,14 +21,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_COMM, KC_DOT, KC_J, KC_G, KC_SLSH,          KC_SCLN, KC_W, KC_K, KC_MINS, KC_X,                   /* row 3 */
 						       KC_J, KC_K,             KC_H, KC_L, // row 4
 				LT(SYMBOLS, KC_ESC), KC_E, KC_LSFT,    KC_BSPC, LT(NUMPADS, KC_SPC), RSFT_T(KC_ENT), // upper thumb //clang-format off
-				LT(NUMPADS, KC_NO), KC_BSPC, KC_TAB, KC_CAPS, TO(PLOVER), LT(FUNCTIONS, KC_NO)// lower thumb //clang-format off
+				COPY, PASTE, KC_TAB, KC_CAPS, TO(PLOVER), LT(FUNCTIONS, KC_NO)// lower thumb //clang-format off
         ),
     [SYMBOLS] = LAYOUT(
         KC_AMPR, KC_AT,   KC_PERC, KC_TILD, KC_CIRC,   KC_DLR, KC_BSLS, KC_MINS, KC_SLSH, KC_HASH,
 		KC_LBRC, KC_LCBR, KC_RCBR, KC_LPRN, KC_EQL,    KC_ASTR, KC_RPRN, KC_PLUS, KC_RBRC, KC_EXLM,
-		KC_HOME, KC_END,  KC_PGUP, KC_PGDN, KC_TRNS,   KC_QUOT, KC_LEFT, KC_UP, KC_DOWN, KC_RGHT,
+		LSFT(KC_COMM), LSFT(KC_DOT),KC_QUES, KC_COLON, KC_GRAVE,  KC_QUOT, KC_LEFT, KC_UP, KC_DOWN, KC_RGHT,
 								   KC_UP,   KC_DOWN,   KC_LEFT, KC_RGHT,
-						  KC_TRNS, KC_TRNS, KC_BTN1,   KC_BTN2, KC_TRNS, KC_TRNS,//clang-format off
+						  KC_TRNS, KC_TRNS, KC_LSFT,   KC_BTN2, KC_TRNS, KC_RSFT,//clang-format off
 						  KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS),//clang-format off
     [NUMPADS] = LAYOUT(
         KC_SLEP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_PSLS, KC_P7, KC_P8, KC_P9, KC_PPLS, 
@@ -63,3 +51,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 								KC_NO,  KC_NO,     KC_NO, KC_NO, 
 						STN_A,  STN_A,  STN_O,     STN_E, STN_U, STN_U, 
 						STN_O,  KC_NO,  KC_NO,     KC_NO, TO(MALTRON),STN_E)};
+
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record)
+{
+    switch (keycode)
+    {
+    case COPY:
+        if (record->event.pressed)
+        {
+            register_code(KC_LGUI);
+            register_code(KC_C);
+            unregister_code(KC_LGUI);
+            unregister_code(KC_C);
+        }
+        break;
+    case PASTE:
+        if (record->event.pressed)
+        {
+            register_code(KC_LGUI);
+            register_code(KC_V);
+            unregister_code(KC_LGUI);
+            unregister_code(KC_V);
+        }
+    }
+    return true;
+};
