@@ -11,7 +11,8 @@ enum dactyl_layers
 enum custom_keycodes
 {
     COPY,
-    PASTE
+    PASTE,
+	BALDUR_ROLL
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -28,18 +29,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_LBRC, KC_LCBR, KC_RCBR, KC_LPRN, KC_EQL,    KC_ASTR, KC_RPRN, KC_PLUS, KC_RBRC, KC_EXLM,
 		LSFT(KC_COMM), LSFT(KC_DOT),KC_QUES, KC_COLON, KC_GRAVE,  KC_QUOT, KC_LEFT, KC_UP, KC_DOWN, KC_RGHT,
 								   KC_UP,   KC_DOWN,   KC_LEFT, KC_RGHT,
-						  KC_TRNS, KC_TRNS, KC_LSFT,   KC_BTN2, KC_TRNS, KC_RSFT,//clang-format off
+						  KC_NO, KC_NO, KC_LSFT,   KC_BTN2, KC_TRNS, KC_RSFT,//clang-format off
 						  KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS),//clang-format off
     [NUMPADS] = LAYOUT(
         KC_SLEP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_PSLS, KC_P7, KC_P8, KC_P9, KC_PPLS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_PAST, KC_P4, KC_P5, KC_P6, KC_PCMM, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_PMNS, KC_P1, KC_P2, KC_P3, KC_PEQL,
 		                           KC_VOLU, KC_VOLD,  KC_P0,   KC_PDOT, 
-						  KC_MPLY, KC_MNXT, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS,
+						  KC_NO, KC_NO, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS,
 						  KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS),
     [FUNCTIONS] = LAYOUT(
 		KC_F10, KC_F7, KC_F8, KC_F9, RESET,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, // row 1
-	    KC_F11, KC_F4, KC_F5, KC_F6, KC_TRNS,      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, // row 2
+	    KC_F11, KC_F4, KC_F5, KC_F6, BALDUR_ROLL,      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, // row 2
 		KC_F12, KC_F1, KC_F2, KC_F3, KC_TRNS,      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          // row 3
 						      KC_VOLU, KC_VOLD,    KC_TRNS, KC_TRNS, // row 4
                      KC_MPLY, KC_MNXT, KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS, 
@@ -74,6 +75,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             unregister_code(KC_LGUI);
             unregister_code(KC_V);
         }
+		break;
+	case BALDUR_ROLL:
+		if (record->event.pressed)
+		{
+				register_code(KC_LCTRL);
+				register_code(KC_8);
+				unregister_code(KC_LCTRL);
+				unregister_code(KC_8);
+		}
+		break;
+    default:
+		break;
     }
     return true;
 };
